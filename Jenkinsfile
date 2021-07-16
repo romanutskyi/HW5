@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         COMMIT_ID="""${env.BUILD_TIMESTAMP}"""
-        //"""${sh(returnStdout: true, script: 'git rev-parse --short HEAD')}"""
         app = ''
     }
     stages {
@@ -16,11 +15,25 @@ pipeline {
             }
         }
         
-        stage('Test') {
+        stage('Run') {
             steps {
-                sh 'docker run -p 8081:80 -t ${IMAGE_NAME}:${IMAGE_TAG}'
+                sh 'docker run -d -p 80:80 ${IMAGE_NAME}:${IMAGE_TAG}'
+
             }
         }
+	
+        stage('Check Availability') {
+            steps {             
+              waitUntil {
+                  try {         
+                      sh "curl -s --head  --request GET  localhost/actuator/health | grep '200'"
+                      return true
+                  } catch (Exception e) {
+                        return false
+                  }
+              }
+           }
+       } 
         
         stage('Push') {
             steps {

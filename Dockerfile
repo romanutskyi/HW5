@@ -6,8 +6,12 @@ WORKDIR /usr/share/nginx/html
 
 RUN apt-get update -y
 
+RUN rm *
+
 RUN apt install git -y &&\
-    git init &&\
-    git clone git@github.com/romanutskyti/HW5.git
+    git clone https://github.com/romanutskyi/HW5.git ./
 
 RUN ls -la
+
+
+
