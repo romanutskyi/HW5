@@ -21,19 +21,6 @@ pipeline {
 
             }
         }
-	
-        stage('Check Availability') {
-            steps {             
-              waitUntil {
-                  try {         
-                      sh "curl -s --head  --request GET  localhost/actuator/health | grep '200'"
-                      return true
-                  } catch (Exception e) {
-                        return false
-                  }
-              }
-           }
-       } 
         
         stage('Push') {
             steps {
