@@ -1,5 +1,5 @@
 #!/bin/bash
-url='http://website-to-test'
+url='http://35.245.127.29'
 attempts=5
 timeout=5
 online=false
